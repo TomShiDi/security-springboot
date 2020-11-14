@@ -33,4 +33,12 @@
         select id,username,password,fullname,mobile from t_user
             where username = #{username}
     </select>
+
+    <select id="getUserPermissionByUserId" resultType="com.tomshidi.security.springboot.entity.PermissionEntity">
+        SELECT t_permission.id,t_permission.`code`,t_permission.description,t_permission.url
+        from t_user INNER JOIN t_user_role ON t_user.id = t_user_role.user_id
+                    INNER JOIN t_role_permission ON t_role_permission.role_id = t_user_role.role_id
+                    INNER JOIN t_permission ON t_permission.id = t_role_permission.permission_id
+        where t_user.id = #{user_id}
+    </select>
 </mapper>

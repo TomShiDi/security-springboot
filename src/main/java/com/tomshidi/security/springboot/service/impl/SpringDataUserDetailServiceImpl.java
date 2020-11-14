@@ -1,5 +1,6 @@
 package com.tomshidi.security.springboot.service.impl;
 
+import com.tomshidi.security.springboot.entity.PermissionEntity;
 import com.tomshidi.security.springboot.entity.UserEntity;
 import com.tomshidi.security.springboot.repository.UserMapper;
 import org.slf4j.Logger;
@@ -10,6 +11,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author TomShiDi
@@ -27,10 +31,12 @@ public class SpringDataUserDetailServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         logger.info("username= {}", username);
         UserEntity userEntity = userMapper.getUserByUsername(username);
+        List<PermissionEntity> permissionEntityList = userMapper.getUserPermissionByUserId(userEntity.getId());
+        List<String> permissionCode = permissionEntityList.stream().map(PermissionEntity::getCode).collect(Collectors.toList());
         if (userEntity == null) {
             return null;
         }
-        return User.withUsername(userEntity.getUsername()).password(userEntity.getPassword()).authorities("p1").build();
+        return User.withUsername(userEntity.getUsername()).password(userEntity.getPassword()).authorities(permissionCode.toArray(new String[]{})).build();
     }
 
 }
