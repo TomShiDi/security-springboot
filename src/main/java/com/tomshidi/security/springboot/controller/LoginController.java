@@ -1,5 +1,6 @@
 package com.tomshidi.security.springboot.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,6 +25,7 @@ public class LoginController {
         return getUsername() + "\t登录成功";
     }
 
+    @PreAuthorize("hasAuthority('p1')")
     @GetMapping(value = "/r/r1", produces = "text/plain;charset=utf-8")
     public String r1() {
         return "访问资源1";
