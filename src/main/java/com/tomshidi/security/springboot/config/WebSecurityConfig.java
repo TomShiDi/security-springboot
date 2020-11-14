@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,8 +18,6 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
  **/
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
-
 
     /**
      *
@@ -47,7 +46,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()//允许表单登录
                 .loginPage("/login-view")
                 .loginProcessingUrl("/login")
-                .successForwardUrl("/login-success");//自定义登录成功的返回页面
+                .successForwardUrl("/login-success")//自定义登录成功的返回页面
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)//会话session管理
+                .and()
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login-view?logout");
     }
 
 }
