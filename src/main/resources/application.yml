@@ -1,0 +1,24 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /security-springboot
+spring:
+  application:
+    name: security-springboot
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+  datasource:
+    url: jdbc:mysql://localhost:3306/db_spring_security?useSSL=false&characterEncoding=utf-8&serverTimezone=GMT%2b8
+    username: root
+    password: 15576123138
+    driver-class-name: com.mysql.jdbc.Driver
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml
+
+logging:
+  level:
+    com:
+      tomshidi:
+        security: debug
